@@ -3,9 +3,14 @@ import pypdf
 from pathlib import Path
 from sqlmodel import SQLModel, Field
 
+def process_line(line: tuple):
+    ...
 
 def capture_data(path: Path) -> list[tuple]:
-    # TODO: create capture_data
+    """
+    Captura os dados dos professores, linha a linha, considerando
+    o tipo (type) de concurso que ele realizou
+    """
     table_data = []
 
     # Abrir o PDF
@@ -19,6 +24,7 @@ def capture_data(path: Path) -> list[tuple]:
             text = page.extract_text()
             # Dividindo em linhas
             lines = text.splitlines()
+            breakpoint()
             # Loopando pelas linhas
             for line in lines:
                 # Ignorando os cabeçalhos

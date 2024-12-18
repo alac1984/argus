@@ -1,5 +1,50 @@
 from pathlib import Path
-from createdb import capture_data
+from createdb import Line, LineType, capture_data, process_line
+
+
+def test_process_line_case_header():
+    line = 'NOME INSCRIÇÃO Língua ', 'Portuguesa', 'Conhecimentos ', 'Educacionais', 'Conhecimentos ', 'EspecíficosNOTA OBJETIVA'
+
+    result = process_line(line)
+
+    assert result.type = LineType.HEADER
+
+def test_process_line_case_type():
+    line1 = '401 - PROFESSOR   ANOS INICIAIS (1º AO 5º ANO) - TODAS AS ÁREAS DA EDUCAÇÃO BÁSICA '
+    line2 = '410 - PROFESSOR ENSINO FUNDAMENTAL (ANOS FINAIS) OU MÉDIO - LÍNGUA PORTUGUESA '
+
+    result1 = process_line(line1)
+    result2 = process_line(line2)
+
+    assert result1.type = LineType.SUBJECT
+    assert result2.type = LineType.SUBJECT
+    assert result1.code = 401
+    assert result2.code = 410
+
+def test_process_line_case_candidate():
+    line = 'Abgail Marrocos Silva 0340050033 2.00 6.00 10.00 18.00'
+
+    result = process_line(line)
+
+    assert result.type = LineType.CANDIDATE
+    assert result.content = 'Abgail Marrocos Silva 0340050033 2.00 6.00 10.00 18.00'
+
+def test_process_line_case_anexo():
+    line = 'ANEXO ÚNICO - EDITAL DE RESULTADO DA PROVA OBJETIVA – PRELIMINAR'
+
+    result = process_line(line)
+
+    assert result.type = LineType.ANEXO
+
+def test_process_line_case_secretaria():
+    line1 = 'SECRETARIA DA EDUCAÇÃO DO ESTADO DO CEARÁ'
+    line1 = 'SEDUC'
+
+    result1 = process_line(line1)
+    result2 = process_line(line2)
+
+    assert result1.type = LineType.ANEXO
+    assert result2.type = LineType.ANEXO
 
 def test_capture_data():
     path = Path('tests/testdata.pdf')
