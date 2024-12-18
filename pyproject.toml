@@ -8,8 +8,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-pypdf2 = "^3.0.1"
 sqlmodel = "^0.0.22"
+pypdf = "^5.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
