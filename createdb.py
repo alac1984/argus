@@ -1,10 +1,55 @@
 import re
 import pypdf
 from pathlib import Path
+from enum import Enum
+from pydantic import BaseModel
 from sqlmodel import SQLModel, Field
 
-def process_line(line: tuple):
-    ...
+
+class LineType(Enum):
+    HEADER = 1
+    SUBJECT = 2
+    CANDIDATE = 3
+    ANEXO = 4
+    SECRETARIA = 5
+
+
+class Line(BaseModel):
+    type: LineType
+    content: tuple | None = None
+    code: int | None = None
+
+
+def process_line(line: str) -> Line | None:
+    header_regex = re.compile(r"\b(NOME|INSCRIÇÃO|Língua|Portuguesa|Conhecimentos|Educacionais|EspecíficosNOTA\sOBJETIVA)\b")
+    subject_regex = re.compile(r"(4\d{2})\s-\sPROFESSOR")
+    candidate_regex = re.compile(
+        r"([\w\s\(\)\.,çãáéóêô]+?)\s+(\d{10})\s+(\d+\.\d{2})\s+(\d+\.\d{2})\s+(\d+\.\d{2})\s+(\d+\.\d{2})"
+    )
+    anexo_regex = re.compile(r"ANEXO ÚNICO - ")
+    secretaria_regex = re.compile(r"(SECRETARIA DA EDUCAÇÃO DO ESTADO DO CEARÁ|SEDUC)")
+
+    match = candidate_regex.match(line)
+    if match:
+        return Line(type=LineType.CANDIDATE, content=tuple(match.groups()))
+
+    match = subject_regex.match(line)
+    if match:
+        return Line(type=LineType.SUBJECT, code=int(match.group(1)))
+
+    match = header_regex.match(line)
+    if match:
+        return Line(type=LineType.HEADER)
+
+    match = anexo_regex.match(line)
+    if match:
+        return Line(type=LineType.ANEXO)
+
+    match = secretaria_regex.match(line)
+    if match:
+        return Line(type=LineType.SECRETARIA)
+
+    return None
 
 def capture_data(path: Path) -> list[tuple]:
     """

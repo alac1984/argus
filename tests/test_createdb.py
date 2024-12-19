@@ -3,48 +3,63 @@ from createdb import Line, LineType, capture_data, process_line
 
 
 def test_process_line_case_header():
-    line = 'NOME INSCRIÇÃO Língua ', 'Portuguesa', 'Conhecimentos ', 'Educacionais', 'Conhecimentos ', 'EspecíficosNOTA OBJETIVA'
+    line1 = 'NOME INSCRIÇÃO Língua '
+    line2 = 'Portuguesa'
+    line3 = 'Conhecimentos '
+    line4 = 'Educacionais'
+    line5 = 'Conhecimentos '
+    line6 = 'EspecíficosNOTA OBJETIVA'
 
-    result = process_line(line)
+    result1 = process_line(line1)
+    result2 = process_line(line2)
+    result3 = process_line(line3)
+    result4 = process_line(line4)
+    result5 = process_line(line5)
+    result6 = process_line(line6)
 
-    assert result.type = LineType.HEADER
+    assert result1.type == LineType.HEADER
+    assert result2.type == LineType.HEADER
+    assert result3.type == LineType.HEADER
+    assert result4.type == LineType.HEADER
+    assert result5.type == LineType.HEADER
+    assert result6.type == LineType.HEADER
 
-def test_process_line_case_type():
+def test_process_line_case_subject():
     line1 = '401 - PROFESSOR   ANOS INICIAIS (1º AO 5º ANO) - TODAS AS ÁREAS DA EDUCAÇÃO BÁSICA '
     line2 = '410 - PROFESSOR ENSINO FUNDAMENTAL (ANOS FINAIS) OU MÉDIO - LÍNGUA PORTUGUESA '
 
     result1 = process_line(line1)
     result2 = process_line(line2)
 
-    assert result1.type = LineType.SUBJECT
-    assert result2.type = LineType.SUBJECT
-    assert result1.code = 401
-    assert result2.code = 410
+    assert result1.type == LineType.SUBJECT
+    assert result2.type == LineType.SUBJECT
+    assert result1.code == 401
+    assert result2.code == 410
 
 def test_process_line_case_candidate():
     line = 'Abgail Marrocos Silva 0340050033 2.00 6.00 10.00 18.00'
 
     result = process_line(line)
 
-    assert result.type = LineType.CANDIDATE
-    assert result.content = 'Abgail Marrocos Silva 0340050033 2.00 6.00 10.00 18.00'
+    assert result.type == LineType.CANDIDATE
+    assert result.content == ('Abgail Marrocos Silva', '0340050033', '2.00', '6.00', '10.00', '18.00')
 
 def test_process_line_case_anexo():
     line = 'ANEXO ÚNICO - EDITAL DE RESULTADO DA PROVA OBJETIVA – PRELIMINAR'
 
     result = process_line(line)
 
-    assert result.type = LineType.ANEXO
+    assert result.type == LineType.ANEXO
 
 def test_process_line_case_secretaria():
     line1 = 'SECRETARIA DA EDUCAÇÃO DO ESTADO DO CEARÁ'
-    line1 = 'SEDUC'
+    line2 = 'SEDUC'
 
     result1 = process_line(line1)
     result2 = process_line(line2)
 
-    assert result1.type = LineType.ANEXO
-    assert result2.type = LineType.ANEXO
+    assert result1.type == LineType.SECRETARIA
+    assert result2.type == LineType.SECRETARIA
 
 def test_capture_data():
     path = Path('tests/testdata.pdf')
