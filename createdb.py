@@ -19,6 +19,13 @@ class Line(BaseModel):
     content: tuple | None = None
     code: int | None = None
 
+# TODO: create Candidate model (SQLModel)
+
+
+class CandidateCreate(BaseModel):
+    # TODO: create CandidateCreate model
+    ...
+
 
 def process_line(line: str) -> Line | None:
     header_regex = re.compile(r"\b(NOME|INSCRIÇÃO|Língua|Portuguesa|Conhecimentos|Educacionais|EspecíficosNOTA\sOBJETIVA)\b")
@@ -69,22 +76,16 @@ def capture_data(path: Path) -> list[tuple]:
             text = page.extract_text()
             # Dividindo em linhas
             lines = text.splitlines()
-            breakpoint()
+            # Inicializa a variável que salvará o último código
+            last_code = None
             # Loopando pelas linhas
             for line in lines:
-                # Ignorando os cabeçalhos
-                if "NOME" in line and "INSCRIÇÃO" in line:
-                    continue
+                result = process_line(line)
 
-                # Pattern para pegar os dados
-                pattern = re.compile(
-                    r"([\w\s\(\)\.,çãáéóêô]+?)\s+(\d{10})\s+(\d+\.\d{2})\s+(\d+\.\d{2})\s+(\d+\.\d{2})\s+(\d+\.\d{2})"
-                )
-                # Dar match na linha
-                match = pattern.match(line)
+                if line.type == LineType.CANDIDATE:
+                    # TODO: implement the CandidateCreate logic here
 
-                if match:
-                    table_data.append(tuple(match.groups()))
+                # TODO: implement the logic for other LineTypes
 
     return table_data
 
