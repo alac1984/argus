@@ -1,15 +1,19 @@
 [tool.poetry]
-name = "seducmon"
+name = "argus"
 version = "0.1.0"
-description = "A bunch of scripts to assert if SEDUC selection is calling the candidates honestly."
+description = "A software to assert if SEDUC selection is calling candidates honestly."
 authors = ["André Carvalho <alac1984@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "argus"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"
 sqlmodel = "^0.0.22"
 pypdf = "^5.1.0"
+click = "^8.1.8"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -22,3 +26,6 @@ black = "^24.10.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+argus-cli = "argus.cli.cli:cli" # CLI entry point

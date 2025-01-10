@@ -1,11 +1,11 @@
 """
 
-    DOC: domain.__init__.py
+    DOC: domain/__init__.py
 
     Os seguintes elementos fazem parte do domínio:
 
     - ARQUIVO: é um Arquivo no sistema operacional, salvo em uma determinada
-    pasta do sistema, e que pode ser um Documento;
+    pasta do sistema, e que pode ser um Publicação que contém Documentos;
     - CARGO: é a ocupação para a qual um Candidato fez sua Inscrição em um Concurso;
     - CONCURSO: é um processo seletivo, cujos Arquivos podem ser Publicações e estas
     podem conter Documentos, que podem possuir Entradas;
@@ -37,7 +37,7 @@
         - CANDIDATO: uma Pessoa que pode ser encontrado em uma Lista de Inscritos,
         em uma Lista de Aprovados ou em uma Lista de Convocados;
     - PUBLICAÇÃO: é o nome de um documento externo ao sistema, e que pode possuir
-    informações de interesse do sistema.
+    Documentos de interesse do sistema.
         - DOE: Diaŕio Oficial do Estado, pode conter uma Lista de Convocação;
         - ANEXO: (i.e.: Anexo ao Edital) pode conter Listas de Inscrição ou Lista de
         Aprovação.
